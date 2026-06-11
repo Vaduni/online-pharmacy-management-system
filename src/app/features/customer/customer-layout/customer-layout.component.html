@@ -1,1 +1,205 @@
-<p>customer-layout works!</p>
+<div class="layout-wrapper">
+
+  <div class="sidebar" [class.collapsed]="sidebarCollapsed()">
+
+    <div class="brand">
+      <span class="brand-logo">
+        <i class="fa-solid fa-capsules"></i>
+      </span>
+
+      <span class="brand-name" *ngIf="!sidebarCollapsed()">
+        GCET Medicare
+      </span>
+
+      <button class="collapse-btn" (click)="toggleSidebar()">
+        <i
+          class="fa-solid"
+          [class.fa-angle-left]="!sidebarCollapsed()"
+          [class.fa-angle-right]="sidebarCollapsed()">
+        </i>
+      </button>
+    </div>
+
+    <div class="user-block">
+      <div class="avatar">
+        {{ userInitials() }}
+      </div>
+
+      <div class="user-info" *ngIf="!sidebarCollapsed()">
+        <span class="username">
+          {{ currentUser()?.profile?.name || 'Customer' }}
+        </span>
+        <span class="user-role">
+          Customer
+        </span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+
+      <a routerLink="dashboard" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <i class="fa-solid fa-house"></i>
+        </span>
+
+        <span class="nav-label" *ngIf="!sidebarCollapsed()">
+          Dashboard
+        </span>
+      </a>
+
+      <a routerLink="catalog" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <i class="fa-solid fa-pills"></i>
+        </span>
+
+        <span class="nav-label" *ngIf="!sidebarCollapsed()">
+          Medicine Catalog
+        </span>
+      </a>
+
+      <a routerLink="cart" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </span>
+
+        <span class="nav-label" *ngIf="!sidebarCollapsed()">
+          Shopping Cart
+        </span>
+
+        <span
+          class="badge badge-cart"
+          *ngIf="cartCount() > 0 && !sidebarCollapsed()">
+
+          {{ cartCount() }}
+
+        </span>
+      </a>
+
+      <a routerLink="orders" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <i class="fa-solid fa-box"></i>
+        </span>
+
+        <span class="nav-label" *ngIf="!sidebarCollapsed()">
+          Order History
+        </span>
+      </a>
+
+      <a routerLink="profile" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">
+          <i class="fa-solid fa-user"></i>
+        </span>
+
+        <span class="nav-label" *ngIf="!sidebarCollapsed()">
+          Profile
+        </span>
+      </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+      <button (click)="logout()" class="btn-logout">
+
+        <span class="btn-logout-icon">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </span>
+
+        <span *ngIf="!sidebarCollapsed()">
+          Sign Out
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="main-container">
+
+    <header class="top-header">
+
+      <div class="header-title">
+        <h1>
+          Welcome, {{ currentUser()?.profile?.name }}
+        </h1>
+      </div>
+
+      <div class="header-actions">
+
+        <div class="notification-bell-wrapper">
+
+          <button class="btn-bell" (click)="toggleNotifDropdown()">
+            <span
+              class="bell-badge"
+              *ngIf="unreadCount() > 0">
+            </span>
+          </button>
+
+          <div
+            class="notif-dropdown"
+            *ngIf="showNotifDropdown()">
+
+            <div class="notif-header">
+              <h3>Notifications</h3>
+
+              <button
+                (click)="markAllAsRead()"
+                class="btn-text-action">
+
+                Mark all read
+
+              </button>
+            </div>
+
+            <div class="notif-list">
+
+              <div
+                *ngIf="notifications().length === 0"
+                class="notif-empty">
+
+                No new alerts.
+
+              </div>
+
+              @for (n of notifications(); track n.id) {
+
+              <div
+                class="notif-item"
+                [ngClass]="{'unread': !n.isRead}"
+                (click)="markAsRead(n.id)">
+
+                <div
+                  class="notif-indicator"
+                  [ngClass]="n.type">
+                </div>
+
+                <div class="notif-body">
+                  <p class="notif-title">{{ n.title }}</p>
+                  <p class="notif-desc">{{ n.message }}</p>
+                  <span class="notif-time">
+                    {{ n.timestamp | date:'shortTime' }}
+                  </span>
+                </div>
+
+              </div>
+
+              }
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </header>
+
+    <main class="content-body">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+
+</div>
