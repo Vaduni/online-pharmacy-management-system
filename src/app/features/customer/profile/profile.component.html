@@ -1,0 +1,73 @@
+<div class="profile-page-wrapper">
+      <div class="page-header">
+        <h1>Profile</h1>
+        <p class="subtitle">Update your delivery address, emergency contacts.</p>
+      </div>
+
+      <div class="profile-layout-grid">
+        <div class="profile-card">
+          <h2>Profile Contact & Delivery Address</h2>
+          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="form-vertical mt-4">
+            <div class="form-group">
+              <label for="name" class="form-label">Full Name *</label>
+              <input id="name" type="text" formControlName="name" class="form-input" />
+              <div *ngIf="isInvalid('name')" class="form-error">Name is required.</div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone Number *</label>
+                <input id="phone" type="text" formControlName="phone" class="form-input" />
+                <div *ngIf="isInvalid('phone')" class="form-error">Phone is required.</div>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Registered Email</label>
+                <input id="email" type="text" [value]="userEmail()" class="form-input" disabled />
+                <span class="input-hint">Email identifier cannot be changed.</span>
+              </div>
+            </div>
+
+            <h3 class="section-divider">Delivery Destination</h3>
+            <div class="form-group">
+              <label for="street" class="form-label">Street Address *</label>
+              <input id="street" type="text" formControlName="street" class="form-input" />
+              <div *ngIf="isInvalid('street')" class="form-error">Street address is required.</div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="city" class="form-label">City *</label>
+                <input id="city" type="text" formControlName="city" class="form-input" />
+                <div *ngIf="isInvalid('city')" class="form-error">City is required.</div>
+              </div>
+              <div class="form-group">
+                <label for="state" class="form-label">State *</label>
+                <input id="state" type="text" formControlName="state" class="form-input" />
+                <div *ngIf="isInvalid('state')" class="form-error">Required.</div>
+              </div>
+              <div class="form-group">
+                <label for="zipCode" class="form-label">Zip Code *</label>
+                <input id="zipCode" type="text" formControlName="zipCode" class="form-input" />
+                <div *ngIf="isInvalid('zipCode')" class="form-error">Required.</div>
+              </div>
+            </div>
+
+            <h3 class="section-divider">Emergency Contact</h3>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="emName" class="form-label">Contact Person Name *</label>
+                <input id="emName" type="text" formControlName="emergencyContactName" class="form-input" />
+                <div *ngIf="isInvalid('emergencyContactName')" class="form-error">Contact name is required.</div>
+              </div>
+              <div class="form-group">
+                <label for="emPhone" class="form-label">Contact Person Phone *</label>
+                <input id="emPhone" type="text" formControlName="emergencyContactPhone" class="form-input" />
+                <div *ngIf="isInvalid('emergencyContactPhone')" class="form-error">Contact phone is required.</div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4" [disabled]="profileForm.invalid">
+              Save Profile Changes
+            </button>
+          </form>
+        </div>
