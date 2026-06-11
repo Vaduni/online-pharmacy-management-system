@@ -1,0 +1,79 @@
+<div class="layout-wrapper">
+    <aside class="sidebar admin-sidebar">
+        <div class="brand">
+            <span class="brand-logo">
+                <i class="fa-solid fa-prescription-bottle-medical"></i>
+            </span>
+            <span class="brand-name">Admin Portal</span>
+        </div>
+
+        <div class="user-block">
+            <div class="avatar admin-avatar">{{ currentUser()?.profile?.name | slice:0:1 }}</div>
+            <div class="user-info">
+                <span class="username">{{ currentUser()?.profile?.name || 'Administrator' }}</span>
+                <span class="user-role">Pharmacist Admin</span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <a routerLink="dashboard" routerLinkActive="active" class="nav-item">
+                <span class="nav-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </span> Dashboard Reporting
+            </a>
+            <a routerLink="medicines" routerLinkActive="active" class="nav-item">
+                <span class="nav-icon">
+                    <i class="fa-solid fa-pills"></i>
+                </span> Manage Catalog
+            </a>
+            <a routerLink="categories" routerLinkActive="active" class="nav-item">
+  <i class="fa-solid fa-layer-group nav-icon"></i>
+  Categories
+</a>
+<a routerLink="orders" routerLinkActive="active" class="nav-item">
+  <i class="fa-solid fa-box"></i>
+  <span>Orders</span>
+</a>
+<a routerLink="support" routerLinkActive="active" class="nav-item">
+  <i class="fa-solid fa-headset"></i>
+  <span>Support</span>
+</a>
+            <a routerLink="prescriptions" routerLinkActive="active" class="nav-item">
+                <span class="nav-icon">
+                    <i class="fa-solid fa-search"></i>
+                </span> Prescriptions Backlog
+                <span class="badge badge-backlog" *ngIf="pendingPrescriptionsCount() > 0">
+                    {{ pendingPrescriptionsCount() }}
+                </span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button (click)="logout()" class="btn-logout">
+                <span class="btn-logout-icon">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </span> Sign Out
+            </button>
+        </div>
+    </aside>
+
+    <div class="main-container">
+        <header class="top-header admin-header">
+            <div class="header-title">
+                <h1>Admin Dashboard</h1>
+            </div>
+
+            <div class="header-actions">
+                <div class="backlog-alert" *ngIf="pendingPrescriptionsCount() > 0">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Backlog:
+                    <span>{{ pendingPrescriptionsCount() }} Pending Reviews</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-body">
+            <router-outlet />
+        </main>
+    </div>
+</div>

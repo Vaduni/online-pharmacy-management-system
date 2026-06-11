@@ -1,0 +1,42 @@
+<div class="admin-dashboard-container">
+
+  <div class="analytics-row">
+
+    <div class="card-analytics" routerLink="../prescriptions">
+      <div class="analytics-detail">
+        <i class="fa-solid fa-file-prescription"></i>
+
+        <h3>Prescriptions Queue</h3>
+        <p class="analytics-num">{{ pendingRxCount() }}</p>
+      </div>
+    </div>
+
+    <div class="card-analytics" routerLink="../medicines">
+      <div class="analytics-detail">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <h3>Low Stock Items</h3>
+        <p class="analytics-num">{{ lowStockCount() }}</p>
+      </div>
+    </div>
+
+    <div class="card-analytics" routerLink="../medicines">
+      <div class="analytics-detail">
+        <i class="fa-solid fa-boxes-stacked"></i>
+
+        <h3>Inventory Status</h3>
+        <p class="analytics-num">{{ lowStockCount() }}</p>
+      </div>
+    </div>
+
+    <div class="card-analytics" routerLink="../prescriptions">
+      <div class="analytics-detail">
+        <i class="fa-solid fa-clipboard-check"></i>
+        <h3>Verification Queue</h3>
+        <p class="analytics-num">{{ pendingOrders().length }}</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
