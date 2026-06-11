@@ -1,1 +1,283 @@
-<p>dashboard works!</p>
+<div class="dashboard-grid">
+
+  <div class="dashboard-main">
+
+    <div class="stats-row">
+
+      <div class="stat-card">
+        <span class="stat-icon">
+          <i class="fa-solid fa-bell"></i>
+        </span>
+        <div class="stat-detail">
+          <h3>Total Orders</h3>
+          <p class="stat-num">{{ totalOrdersCount() }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <span class="stat-icon">
+          <i class="fa-solid fa-bell"></i>
+        </span>
+        <div class="stat-detail">
+          <h3>Refills Active</h3>
+          <p class="stat-num">{{ remindersCount() }}</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="dashboard-card recent-orders-card">
+
+      <div class="card-header">
+        <h2>Track Active Orders</h2>
+        <a routerLink="../orders" class="card-action-link">
+          View All History
+        </a>
+      </div>
+
+      <div *ngIf="activeOrders().length === 0" class="empty-state">
+        <span class="empty-icon">
+          <i class="fa-solid fa-prescription-bottle-medical"></i>
+        </span>
+
+        <p>You have no active or pending orders.</p>
+
+        <a routerLink="../catalog" class="btn btn-primary">
+          Find Medications
+        </a>
+      </div>
+
+      @for (order of activeOrders(); track order.id) {
+
+      <div class="order-widget">
+
+        <div class="order-widget-header">
+
+          <div>
+            <span class="order-id">
+              Order #{{ order.id }}
+            </span>
+
+            <span class="order-date">
+              Placed on {{ order.createdAt | date:'mediumDate' }}
+            </span>
+          </div>
+
+          <span
+            class="badge"
+            [ngClass]="order.status | statusBadge:'class'">
+
+            {{ order.status | statusBadge:'label' }}
+
+          </span>
+
+        </div>
+
+        <div class="order-widget-items">
+
+          @for (item of order.items; track item.medicine.id) {
+
+          <div class="order-item-row">
+            <span>
+              {{ item.medicine.name }}
+              (x{{ item.quantity }})
+            </span>
+
+            <span>
+              ₹{{ (item.medicine.price * item.quantity).toFixed(2) }}
+            </span>
+          </div>
+
+          }
+
+          <div class="order-total-row">
+            <span>Grand Total</span>
+            <span>₹{{ order.total.toFixed(2) }}</span>
+          </div>
+
+        </div>
+
+        <div class="timeline-stepper">
+
+          <div class="step"
+            [class.completed]="isStepCompleted(order.status,'pending_verification')">
+            <div class="step-circle">1</div>
+            <span class="step-label">Upload</span>
+          </div>
+
+          <div class="step-line"
+            [class.completed]="isStepCompleted(order.status,'accepted')">
+          </div>
+
+          <div class="step"
+            [class.completed]="isStepCompleted(order.status,'accepted')">
+            <div class="step-circle">2</div>
+            <span class="step-label">Review</span>
+          </div>
+
+          <div class="step-line"
+            [class.completed]="isStepCompleted(order.status,'packed')">
+          </div>
+
+          <div class="step"
+            [class.completed]="isStepCompleted(order.status,'packed')">
+            <div class="step-circle">3</div>
+            <span class="step-label">Dispense</span>
+          </div>
+
+          <div class="step-line"
+            [class.completed]="isStepCompleted(order.status,'shipped')">
+          </div>
+
+          <div class="step"
+            [class.completed]="isStepCompleted(order.status,'shipped')">
+            <div class="step-circle">4</div>
+            <span class="step-label">Dispatched</span>
+          </div>
+
+          <div class="step-line"
+            [class.completed]="isStepCompleted(order.status,'delivered')">
+          </div>
+
+          <div class="step"
+            [class.completed]="isStepCompleted(order.status,'delivered')">
+            <div class="step-circle">5</div>
+            <span class="step-label">Delivered</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      }
+
+    </div>
+
+  </div>
+
+  <div class="dashboard-side">
+
+    <div class="dashboard-card support-form-card">
+
+      <h2>
+        <i class="fa-solid fa-user-doctor"></i>
+        Pharmacy Customer Support
+      </h2>
+
+      <p class="section-desc">
+        Have questions about side effects or dosages?
+        Submit a ticket directly to our pharmacist team.
+      </p>
+
+      <form
+        [formGroup]="supportForm"
+        (ngSubmit)="submitSupportTicket()"
+        class="support-form">
+
+        <div class="form-group">
+          <label class="form-label">Subject *</label>
+
+          <input
+            type="text"
+            formControlName="subject"
+            placeholder="e.g. Side effect query on Amoxicillin"
+            class="form-input">
+
+          <div
+            *ngIf="supportForm.get('subject')?.touched &&
+                   supportForm.get('subject')?.invalid"
+            class="form-error">
+
+            Subject must be at least 5 characters.
+
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description *</label>
+
+          <textarea
+            formControlName="message"
+            placeholder="Please explain your concern in detail..."
+            class="form-textarea">
+          </textarea>
+
+          <div
+            *ngIf="supportForm.get('message')?.touched &&
+                   supportForm.get('message')?.invalid"
+            class="form-error">
+
+            Detail must be at least 15 characters.
+
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="supportForm.invalid">
+
+          Submit Concern to Pharmacist
+
+        </button>
+
+      </form>
+
+    </div>
+
+    <div
+      class="dashboard-card tickets-log-card"
+      *ngIf="customerTickets().length > 0">
+
+      <h2>Recent Support Tickets</h2>
+
+      <div class="ticket-list">
+
+        @for (ticket of customerTickets(); track ticket.id) {
+
+        <div class="ticket-item">
+
+          <div class="ticket-item-header">
+
+            <span class="ticket-subject">
+              {{ ticket.subject }}
+            </span>
+
+            <span
+              class="badge"
+              [ngClass]="ticket.status | statusBadge:'class'">
+
+              {{ ticket.status | statusBadge:'label' }}
+
+            </span>
+
+          </div>
+
+          <p class="ticket-msg">
+            {{ ticket.message }}
+          </p>
+
+          <div
+            class="ticket-response"
+            *ngIf="ticket.response">
+
+            <strong>
+              <i class="fa-solid fa-comments"></i>
+              Pharmacist:
+            </strong>
+
+            {{ ticket.response }}
+
+          </div>
+
+        </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
