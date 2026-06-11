@@ -1,0 +1,149 @@
+<div class="admin-rx-page">
+      <div class="page-title-row">
+        <h1>Prescription Verification</h1>
+      </div>
+
+      <div class="prescription-split mt-4">
+        <div class="admin-card list-box">
+          <h2>Pending Review Items</h2>
+          <p class="section-desc">Verify uploaded prescription credentials and match generic drug classifications.</p>
+
+          <div class="orders-inbox">
+            <div *ngIf="pendingOrders().length === 0" class="empty-inbox">
+              All prescription orders have been validated.
+            </div>
+            
+            @for (order of pendingOrders(); track order.id) {
+              <div
+                class="inbox-row-card"
+                [class.selected]="selectedOrderId() === order.id"
+                (click)="selectOrder(order.id)"
+              >
+                <div class="inbox-hdr">
+                  <strong>Order #{{ order.id }}</strong>
+                  <span class="badge status-pending">Pending Review</span>
+                </div>
+                <div class="inbox-details">
+                  <p>Patient: {{ order.customerName }}</p>
+                  <p>Total: \₹{{ order.total.toFixed(2) }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="admin-card workspace-box">
+          @if (selectedOrder(); as order) {
+            <div class="workspace-layout animate-fade">
+              <div class="work-header">
+                <h2>Pharmacist Verification Dashboard</h2>
+                <span>Order Reference: #{{ order.id }}</span>
+              </div>
+
+              <div class="work-grid">
+                <div class="panel-left">
+                  <div class="data-block">
+                    <h3>Patient Details</h3>
+                    <p>Name: <strong>{{ order.customerName }}</strong></p>
+                    <p>Address: {{ order.shippingAddress.street }}, {{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{ order.shippingAddress.zipCode }}</p>
+                    <p>Scheduled Slot: {{ order.deliverySlot }}</p>
+                  </div>
+
+                  <div class="data-block mt-3">
+                    <h3>Prescription Drugs to Verify</h3>
+                    <div class="rx-items-list-work">
+                      @for (item of order.items; track item.medicine.id) {
+                        <div class="rx-item-detail-row">
+                          <span class="rx-tag" *ngIf="item.medicine.isPrescriptionRequired">Rx</span>
+                          <span class="otc-tag" *ngIf="!item.medicine.isPrescriptionRequired">OTC</span>
+                          <div class="rx-item-info">
+                            <strong>{{ item.medicine.name }}</strong> (x{{ item.quantity }})
+                            <br>
+                            <small class="text-muted">Dosage: {{ item.medicine.dosage }}</small>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel-right">
+                  <h3>Doctor Prescription Document</h3>
+                  
+                  <div class="prescription-attachment-preview">
+                    <div class="preview-doc-box">
+        
+                      <h4>{{ order.prescriptionName || 'prescription_slip.pdf' }}</h4>
+                      <p class="file-size-lbl">Document Attachment Size: 1.4 MB</p>
+                      
+                      <div class="checklist-box mt-3">
+                        <p class="checklist-title">Pharmacist Verification Checklist:</p>
+                        <div class="check-item"><input type="checkbox" id="c1"> <label for="c1">Doctor's Signature Present</label></div>
+                        <div class="check-item"><input type="checkbox" id="c2"> <label for="c2">Patient Name Matches Invoice</label></div>
+                        <div class="check-item"><input type="checkbox" id="c3"> <label for="c3">Medication Generic Name Matches</label></div>
+                        <div class="check-item"><input type="checkbox" id="c4"> <label for="c4">Refill Validity (Not Expired)</label></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="verification-controls mt-4">
+                    <form [formGroup]="reviewForm" (ngSubmit)="onReject(order.id)" class="reject-form-area">
+                      <div class="form-group">
+                        <label for="reviewComment" class="form-label">Pharmacist Notes / Feedback (Required for rejection)</label>
+                        <textarea
+                          id="reviewComment"
+                          formControlName="reviewComment"
+                          class="form-textarea"
+                          placeholder="e.g. Approved. Or describe rejection reason..."
+                        ></textarea>
+                      </div>
+
+                      <div class="btn-group-row">
+                        <button
+                          type="button"
+                          class="btn btn-primary btn-approve"
+                          (click)="onApprove(order.id)"
+                        >
+                          ✓ Approve Order
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn btn-outline text-danger btn-reject"
+                          [disabled]="reviewForm.invalid"
+                        >
+                          ✕ Reject Order
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div class="admin-state-progression mt-4" *ngIf="order.status !== 'pending_verification'">
+                <h3>Logistical State Transition</h3>
+                <p class="section-desc">Advance the order through packing and dispatch phases once prescription is verified.</p>
+                <div class="logistic-btn-group">
+                  <button class="btn btn-outline btn-xs" [disabled]="order.status !== 'accepted'" (click)="advanceStatus(order.id, 'packed', 'Package packed by clinical assistant.')">
+                    Mark Packed
+                  </button>
+                  <button class="btn btn-outline btn-xs" [disabled]="order.status !== 'packed'" (click)="advanceStatus(order.id, 'shipped', 'Order handed over to delivery courier agent.')">
+                    Mark Shipped
+                  </button>
+                  <button class="btn btn-outline btn-xs" [disabled]="order.status !== 'shipped'" (click)="advanceStatus(order.id, 'delivered', 'Order successfully signed by patient.')">
+                    Mark Delivered
+                  </button>
+                  <button class="btn btn-outline btn-xs text-danger" [disabled]="order.status === 'delivered' || order.status === 'canceled'" (click)="advanceStatus(order.id, 'canceled', 'Order canceled by pharmacist.')">
+                    Cancel Order
+                  </button>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="select-prompt">
+              <h3>No Active Verification Selected</h3>
+              <p>Select a pending prescription order from the inbox queue to start verification references checks.</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>

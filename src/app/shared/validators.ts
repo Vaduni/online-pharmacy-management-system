@@ -26,7 +26,7 @@ export function quantityLimitValidator(isPrescriptionRequired: boolean): Validat
         quantityLimitExceeded: {
           maxAllowed: limit,
           actual: qty,
-          message: Maximum allowed quantity for this product is ${limit} units.
+          message: `Maximum allowed quantity for this product is ${limit} units.`
         }
       };
     }
@@ -60,7 +60,7 @@ export function ageEligibilityValidator(minAge: number = 18): ValidatorFn {
         underage: {
           minAge,
           actualAge: age,
-          message: You must be at least ${minAge} years old to purchase restricted chronic care medications.
+          message: `You must be at least ${minAge} years old to purchase restricted chronic care medications.`
         }
       };
     }

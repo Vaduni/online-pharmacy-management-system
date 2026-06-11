@@ -1,0 +1,111 @@
+ <div class="admin-medicines-page">
+      <div class="page-title-row">
+        <h1> Catalog</h1>
+        <button class="btn btn-primary btn-sm" (click)="openCreateForm()">
+         Add New Medication
+        </button>
+      </div>
+
+      <div class="catalog-dashboard-split mt-4">
+        <div class="admin-card form-drawer" *ngIf="showForm()">
+          <div class="drawer-header">
+            <h2>{{ isEditMode() ? 'Edit Product Parameters' : 'Register New Formulary' }}</h2>
+            <button class="btn-close" (click)="closeForm()">×</button>
+          </div>
+
+          <form [formGroup]="medForm" (ngSubmit)="saveProduct()" class="form-vertical mt-4">
+            <div class="form-group">
+              <label for="name" class="form-label">Generic Name *</label>
+              <input id="name" type="text" formControlName="name" class="form-input" placeholder="e.g. Amoxicillin 500mg" />
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="category" class="form-label">Clinical Category *</label>
+                <select id="category" formControlName="category" class="form-select">
+                  <option value="Antibiotics">Antibiotics</option>
+                  <option value="Diabetes Care">Diabetes Care</option>
+                  <option value="Heart Health">Heart Health</option>
+                  <option value="Pain Relief">Pain Relief</option>
+                  <option value="Vitamins & Wellness">Vitamins & Wellness</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="price" class="form-label">Unit Price (₹) *</label>
+                <input id="price" type="number" formControlName="price" class="form-input" step="0.01" />
+              </div>
+            </div>
+
+            <div class="preference-item">
+              <div class="pref-body">
+                <h4>Prescription Required</h4>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" formControlName="isPrescriptionRequired" />
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="description" class="form-label">Indications / Description *</label>
+              <textarea id="description" formControlName="description" class="form-textarea" placeholder="Describe medication uses..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="medForm.invalid">
+              {{ isEditMode() ? 'Save Updated Profile' : 'Publish Product to Formulary' }}
+            </button>
+          </form>
+        </div>
+                <div class="admin-card catalog-list-card">
+          <h2>Formulary Entries</h2>
+          <p class="section-desc">Search details or adjust price and stock points directly in the table logs.</p>
+
+          <div class="catalog-table mt-4">
+            <div class="table-hdr-med">
+              <span>Medication / Generic</span>
+              <span class="text-center">Prescription</span>
+              <span class="text-center">Stock</span>
+              <span class="text-right">Price</span>
+              <span class="text-right">Actions</span>
+            </div>
+            <div class="table-rows-med">
+              @for (med of medicines(); track med.id) {
+                <div class="table-row-med">
+                  <span class="med-info-col">
+                    <strong>{{ med.name }}</strong> <br>
+                    <small class="text-brand-green">Brand: {{ med.brand }}</small> | 
+                    <small class="text-muted">{{ med.category }}</small>
+                  </span>
+                  
+                  <span class="text-center">
+                    <span class="badge" [class.badge-danger]="med.isPrescriptionRequired" [class.badge-success]="!med.isPrescriptionRequired">
+                      {{ med.isPrescriptionRequired ? 'Rx Required' : 'OTC / Wellness' }}
+                    </span>
+                  </span>
+
+                  <span class="text-center inline-stepper-cell">
+                    <div class="inline-stepper">
+                      <button (click)="adjustStockInline(med.id, -5)">-</button>
+                      <span class="inline-qty">{{ med.stock }}</span>
+                      <button (click)="adjustStockInline(med.id, 5)">+</button>
+                    </div>
+                  </span>
+
+                  <span class="text-right font-bold price-txt">
+                    \₹{{ med.price.toFixed(2) }}
+                  </span>
+
+                  <span class="text-right row-actions">
+                    <button class="btn btn-outline btn-xs" (click)="editProduct(med)">Edit</button>
+                    <button class="btn btn-outline btn-xs text-danger" (click)="deleteProduct(med.id)">Delete</button>
+                  </span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,55 @@
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  color: #1e293b;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.tickets {
+  display: grid;
+  gap: 1rem;
+}
+
+.ticket-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: all 0.2s ease;
+}
+
+.ticket-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+}
+
+.ticket-card h3 {
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  font-size: 1.05rem;
+}
+
+.ticket-card p {
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.btn {
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #2563eb;
+}

@@ -1,1 +1,59 @@
-<p>admin-support works!</p>
+<div class="page-header">
+  <h2>Customer Support</h2>
+</div>
+
+<div class="tickets">
+
+  @if(tickets().length === 0) {
+
+    <div class="ticket-card">
+      <h3>No Support Tickets</h3>
+      <p>No customer queries available.</p>
+    </div>
+
+  }
+
+  @for(ticket of tickets(); track ticket.id) {
+
+    <div class="ticket-card">
+
+      <h3>{{ ticket.customerName }}</h3>
+
+      <p>
+        <strong>Subject:</strong>
+        {{ ticket.subject }}
+      </p>
+
+      <p>
+        {{ ticket.message }}
+      </p>
+
+      <p>
+        <strong>Status:</strong>
+        {{ ticket.status }}
+      </p>
+
+      @if(ticket.response) {
+
+        <div class="response-box">
+          <strong>Admin Response:</strong>
+          <p>{{ ticket.response }}</p>
+        </div>
+
+      }
+
+      @if(ticket.status === 'open') {
+
+        <button
+          class="btn"
+          (click)="reply(ticket.id)">
+          Reply
+        </button>
+
+      }
+
+    </div>
+
+  }
+
+</div>
