@@ -9,7 +9,7 @@
   },
   "include": [
     "src/**/*.ts"
-  ],
+, "src/app/shared/directives/restricted-badge.directive.ts"  ],
   "exclude": [
     "src/**/*.spec.ts"
   ]

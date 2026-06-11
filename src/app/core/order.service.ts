@@ -161,7 +161,7 @@ export class OrderService {
   addToCart(medicine: Medicine, quantity: number) {
     // Custom Validation: Check Stock
     if (medicine.stock <= 0) {
-      this.notifications.addNotification('Add to Cart Failed', Sorry, ${medicine.name} is currently out of stock., 'error');
+      this.notifications.addNotification('Add to Cart Failed', `Sorry, ${medicine.name} is currently out of stock.`, 'error');
       return;
     }
 
@@ -176,7 +176,7 @@ export class OrderService {
       if (newQty > limit) {
         this.notifications.addNotification(
           'Quantity Limit Reached',
-          Restricted medicines are limited to ${limit} units per order. You currently have ${currentCart[existingIdx].quantity} in cart.,
+          `Restricted medicines are limited to ${limit} units per order. You currently have ${currentCart[existingIdx].quantity} in cart.`,
           'warning'
         );
         return;
@@ -187,7 +187,7 @@ export class OrderService {
       if (quantity > limit) {
         this.notifications.addNotification(
           'Quantity Limit Reached',
-          This item is limited to a maximum of ${limit} units per order.,
+          `This item is limited to a maximum of ${limit} units per order.`,
           'warning'
         );
         return;
@@ -197,7 +197,7 @@ export class OrderService {
 
     this.notifications.addNotification(
       'Added to Cart',
-      ${medicine.name} has been added to your shopping cart.,
+      `${medicine.name} has been added to your shopping cart.`,
       'success'
     );
   }
@@ -211,7 +211,7 @@ export class OrderService {
     if (quantity > limit) {
       this.notifications.addNotification(
         'Limit Exceeded',
-        Quantity limit for this item is ${limit} units.,
+        `Quantity limit for this item is ${limit} units.`,
         'warning'
       );
       return;
@@ -304,7 +304,7 @@ status: 'accepted',
 
     this.notifications.addNotification(
       'Order Placed',
-      Order ${orderId} has been successfully submitted! Status: ${newOrder.status},
+      `Order ${orderId} has been successfully submitted! Status: ${newOrder.status}`,
       'success'
     );
 
@@ -320,7 +320,7 @@ status: 'accepted',
       const newTimelineEvent: OrderTimelineEvent = {
         status,
         timestamp: new Date().toISOString(),
-        comment: comment || Status updated to ${status}
+        comment: comment || `Status updated to ${status}`
       };
 
       const updatedOrder: Order = {
@@ -335,7 +335,7 @@ status: 'accepted',
 
       this.notifications.addNotification(
         'Order Status Update',
-        Your order ${orderId} is now: ${status.toUpperCase().replace('_', ' ')}. ${comment || ''},
+        `Your order ${orderId} is now: ${status.toUpperCase().replace('_', ' ')}. ${comment || ''}`,
         status === 'rejected' || status === 'canceled' ? 'warning' : 'success'
       );
     }
@@ -360,7 +360,7 @@ status: 'accepted',
 
     this.notifications.addNotification(
       'Support Ticket Opened',
-      Your query "${subject}" has been submitted. A support representative will respond shortly.,
+      `Your query "${subject}" has been submitted. A support representative will respond shortly.`,
       'info'
     );
   }
@@ -382,7 +382,7 @@ status: 'accepted',
 
       this.notifications.addNotification(
         'Support Ticket Answered',
-        Admin responded to ticket ${ticketId}: "${response.substring(0, 40)}...",
+        `Admin responded to ticket ${ticketId}: "${response.substring(0, 40)}..."`,
         'success'
       );
     }

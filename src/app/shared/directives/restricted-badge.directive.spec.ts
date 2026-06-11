@@ -1,4 +1,4 @@
-import { RestrictedBadge } from './restricted-badge';
+import { RestrictedBadge } from './restricted-badge.directive.ts';
 
 describe('RestrictedBadge', () => {
   it('should create an instance', () => {

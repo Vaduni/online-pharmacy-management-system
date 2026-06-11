@@ -5,15 +5,16 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { OrderService } from '../../../core/order.service';
 import { AuthService } from '../../../core/auth.service';
 import { NotificationService } from '../../../core/notification.service';
-import { DynamicFormComponent, FormFieldConfig } from '../../../shared/components/dynamic-form/dynamic-form.component';
+import { DynamicFormComponent, FormFieldConfig }
+from '../../../shared/components/dynamic-form/dynamic-form.component';
 import { ageEligibilityValidator, deliverySlotValidator, prescriptionFileRequired } from '../../../shared/validators';
 
 @Component({
   selector: 'app-customer-checkout',
   standalone: true,
   imports: [CommonModule, RouterLink, ReactiveFormsModule, DynamicFormComponent],
-  templateUrl: './checkout-component.html',
-  styleUrls: ['./checkout-component.css']
+  templateUrl: './checkout.component.html',
+  styleUrls: ['./checkout.component.css']
 })
 export class CustomerCheckoutComponent implements OnInit {
   private orderService = inject(OrderService);
