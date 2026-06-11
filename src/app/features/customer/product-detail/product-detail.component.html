@@ -1,0 +1,108 @@
+<div class="detail-page-container">
+      <div class="back-nav">
+        <a routerLink="/customer/catalog" class="back-link">← Return to Medicine Search</a>
+      </div>
+
+      @if (loading()) {
+        <div class="loading-state">
+          <div class="loader"></div>
+          <p>Retrieving medication profile...</p>
+        </div>
+      } @else if (medicine(); as med) {
+        <div class="profile-layout">
+          <div class="details-main">
+            <div class="profile-card">
+              <div class="med-header">
+                <span class="med-tag" [ngClass]="{'rx-tag': med.isPrescriptionRequired}">
+                  {{ med.isPrescriptionRequired ? 'Rx - Prescription Required' : 'OTC - Over The Counter' }}
+                </span>
+                <span class="med-category">{{ med.category }}</span>
+              </div>
+              
+              <h1 class="med-name">{{ med.name }}</h1>
+              <p class="med-brand-row">Brand Name: <strong>{{ med.brand }}</strong></p>
+
+              <div class="med-desc-block">
+                <h3>Description & Purpose</h3>
+                <p>{{ med.description }}</p>
+              </div>
+
+              <div class="med-info-grid">
+                <div class="info-box">
+                  <h4>Standard Dosage Guide</h4>
+                  <p>{{ med.dosage }}</p>
+                </div>
+                <div class="info-box danger-box">
+                  <h4>Known Side Effects</h4>
+                  <p>{{ med.sideEffects }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="alternates-card" *ngIf="alternates().length > 0">
+              <h2>Comparable Alternates / Substitutes</h2>
+              <p class="sub-desc">These medications share similar clinical indicators and are chemically equivalent alternatives.</p>
+              
+              <div class="alternates-grid">
+                @for (alt of alternates(); track alt.id) {
+                  <div class="alt-med-item">
+                    <div>
+                      <span class="alt-brand">{{ alt.brand }}</span>
+                      <h4>{{ alt.name }}</h4>
+                    </div>
+                    <div class="alt-footer">
+                      <span class="alt-price">\₹{{ alt.price.toFixed(2) }}</span>
+                      <a [routerLink]="['/customer/product', alt.id]" (click)="reloadProduct(alt.id)" class="btn btn-outline btn-xs">
+                        Swap Profile
+                      </a>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="details-sidebar">
+            <div class="checkout-actions-card">
+              <div class="pricing-row">
+                <span class="lbl">Price per unit</span>
+                <span class="val price-highlight">\₹{{ med.price.toFixed(2) }}</span>
+              </div>
+
+              <div class="stock-row">
+                <span class="lbl">Status</span>
+                <span class="val" [ngClass]="med.stock > 0 ? 'text-success' : 'text-danger'">
+                  {{ med.stock > 0 ? 'In Stock (' + med.stock + ' units)' : 'Out Of Stock' }}
+                </span>
+              </div>
+
+              <div class="qty-control" *ngIf="med.stock > 0">
+                <label for="qty" class="qty-lbl">Quantity:</label>
+                <div class="qty-stepper">
+                  <button type="button" class="btn-qty" (click)="adjustQty(-1)" [disabled]="qty() <= 1">-</button>
+                  <span class="qty-val">{{ qty() }}</span>
+                  <button type="button" class="btn-qty" (click)="adjustQty(1)" [disabled]="qty() >= maxAllowedQty(med)">+</button>
+                </div>
+              </div>
+
+              <div class="warning-alert" *ngIf="med.isPrescriptionRequired">
+                 <strong>Prescription Required:</strong> You will be required to upload a digital prescription photo/PDF during checkout to confirm this order.
+              </div>
+
+              <button
+                class="btn btn-primary btn-block btn-lg"
+                [disabled]="med.stock <= 0"
+                (click)="addToCart(med)"
+              >
+                Add {{ qty() }} to Shopping Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <h3>Medication Profile Not Found</h3>
+          <p>The product identifier may be invalid or it has been retired from our catalog.</p>
+        </div>
+      }
+    </div>
