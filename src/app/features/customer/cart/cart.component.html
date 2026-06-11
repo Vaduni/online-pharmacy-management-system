@@ -1,0 +1,104 @@
+<div class="cart-page-wrapper">
+      <div class="card-title-header">
+        <h1>Shopping Cart</h1>
+        <button class="btn btn-outline btn-sm" (click)="clearCart()" *ngIf="cart().length > 0">
+          Clear Cart
+        </button>
+      </div>
+
+      <div class="cart-layout" *ngIf="cart().length > 0; else emptyCart">
+        <div class="cart-main">
+          <div class="cart-table-card">
+            <div class="cart-table-header">
+              <span class="col-product">Product</span>
+              <span class="col-price">Unit Price</span>
+              <span class="col-qty">Quantity</span>
+              <span class="col-total">Subtotal</span>
+              <span class="col-actions"></span>
+            </div>
+
+            <div class="cart-list">
+              @for (item of cart(); track item.medicine.id) {
+                <div class="cart-item-row">
+                  <div class="col-product item-title-block">
+                    <span class="item-brand">{{ item.medicine.brand }}</span>
+                    <a [routerLink]="['../product', item.medicine.id]" class="item-name-link">
+                      {{ item.medicine.name }}
+                    </a>
+                    <span class="rx-badge" *ngIf="item.medicine.isPrescriptionRequired">
+                      Rx Medication
+                    </span>
+                  </div>
+
+                  <div class="col-price item-val-lbl">
+                    \₹{{ item.medicine.price.toFixed(2) }}
+                  </div>
+                  <div class="col-qty">
+                    <div class="qty-stepper-small">
+                      <button type="button" class="btn-qty-sm" (click)="updateQty(item, -1)">-</button>
+                      <span class="qty-lbl-val">{{ item.quantity }}</span>
+                      <button type="button" class="btn-qty-sm" (click)="updateQty(item, 1)">+</button>
+                    </div>
+                    <span class="qty-limit-hint">Max Allowed: {{ item.medicine.isPrescriptionRequired ? '5' : '30' }}</span>
+                  </div>
+
+                  <div class="col-total item-val-subtotal">
+                    \₹{{ (item.medicine.price * item.quantity).toFixed(2) }}
+                  </div>
+
+                  <div class="col-actions">
+                    <button class="btn-delete-item" (click)="removeItem(item.medicine.id)" title="Remove item">
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="cart-sidebar">
+          <div class="summary-card">
+            <h3>Order Summary</h3>
+            
+            <div class="summary-row">
+              <span>Items Total</span>
+              <span>\₹{{ cartTotal().toFixed(2) }}</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Delivery Charges</span>
+              <span class="text-success">FREE</span>
+            </div>
+
+            <div class="summary-row grand-total-row">
+              <span>Grand Total</span>
+              <span>\₹{{ cartTotal().toFixed(2) }}</span>
+            </div>
+
+            <div class="rx-checkout-notice" *ngIf="requiresRx()">
+              <strong>Prescription Needed</strong>
+              <p>Your cart contains prescription items. Digital doctor prescription verification is required at checkout step.</p>
+            </div>
+
+            <a routerLink="../checkout" class="btn btn-primary btn-block btn-lg">
+              Proceed to Checkout 
+            </a>
+            
+            <a routerLink="../catalog" class="btn btn-outline btn-block text-center mt-2">
+              Continue Shopping
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #emptyCart>
+        <div class="empty-cart-card">
+        <span class="empty-icon">
+  <i class="fa-solid fa-cart-shopping"></i>
+</span>
+          <h2>Your Cart is Empty</h2>
+          <p>Browse our pharmacy catalog and find medications, healthcare supplies, and wellness products.</p>
+          <a routerLink="../catalog" class="btn btn-primary btn-lg mt-3">Find Medications</a>
+        </div>
+      </ng-template>
+    </div>
