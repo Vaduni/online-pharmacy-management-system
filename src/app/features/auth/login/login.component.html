@@ -1,0 +1,118 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-header">
+      <div class="logo-circle">
+        <img
+          src="https://i.pinimg.com/564x/1b/d0/d5/1bd0d5e8dcfc92b850e1bb7e0b18f898.jpg"
+          alt="Pharmacy Logo"
+          class="logo-img"
+        />
+      </div>
+
+      <h2>GCET Medicare</h2>
+
+      <p class="auth-subtitle">
+        Online Pharmacy Management System
+      </p>
+    </div>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="auth-form"
+    >
+
+      <div class="form-group">
+        <label for="email" class="form-label">
+          Email Address
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="e.g. customer@pharmacy.com"
+          class="form-input"
+        />
+
+        <div
+          *ngIf="
+            loginForm.get('email')?.touched &&
+            loginForm.get('email')?.invalid
+          "
+          class="form-error"
+        >
+          Please enter a valid email address.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+          class="form-input"
+        />
+
+        <div
+          *ngIf="
+            loginForm.get('password')?.touched &&
+            loginForm.get('password')?.invalid
+          "
+          class="form-error"
+        >
+          Password is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="role" class="form-label">
+          User Role
+        </label>
+
+        <select
+          id="role"
+          formControlName="role"
+          class="form-select"
+        >
+          <option value="customer">
+            Customer
+          </option>
+
+          <option value="admin">
+            Admin
+          </option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="loginForm.invalid"
+      >
+        Sign In to Account
+      </button>
+
+    </form>
+
+    <div class="auth-footer">
+      <p>
+        Don't have an account?
+
+        <a
+          routerLink="/register"
+          class="auth-link"
+        >
+          Register Here
+        </a>
+      </p>
+    </div>
+
+  </div>
+</div>
