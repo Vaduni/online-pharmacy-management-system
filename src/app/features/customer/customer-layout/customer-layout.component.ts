@@ -4,7 +4,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { OrderService } from '../../../core/order.service';
 import { NotificationService } from '../../../core/notification.service';
-
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-customer-layout',
@@ -32,7 +32,14 @@ readonly sidebarCollapsed = signal(false);
 toggleSidebar() {
   this.sidebarCollapsed.update(v => !v);
 }
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: Event) {
+  const target = event.target as HTMLElement;
 
+  if (!target.closest('.notification-bell-wrapper')) {
+    this.showNotifDropdown.set(false);
+  }
+}
   userInitials() {
     const user = this.currentUser() as any;
     const name = user?.profile?.name || user?.name || '';
@@ -45,12 +52,14 @@ toggleSidebar() {
   }
 
   markAsRead(id: string) {
-    this.notifService.markAsRead(id);
-  }
+  this.notifService.markAsRead(id);
+  this.showNotifDropdown.set(false);
+}
 
   markAllAsRead() {
-    this.notifService.markAllAsRead();
-  }
+  this.notifService.markAllAsRead();
+  this.showNotifDropdown.set(false);
+}
 
   logout() {
     this.auth.logout();

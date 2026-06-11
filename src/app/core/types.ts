@@ -68,7 +68,10 @@ export interface User {
   password: string;
   role: 'customer' | 'admin';
 
-  profile: {
+  name?: string;
+  phone?: string;
+
+  profile?: {
     name: string;
     phone: string;
     street: string;
@@ -79,7 +82,7 @@ export interface User {
     emergencyContactPhone: string;
   };
 
-  preferences: {
+  preferences?: {
     refillReminders: boolean;
     healthAlerts: boolean;
     emailNotifications: boolean;

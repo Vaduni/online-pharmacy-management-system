@@ -25,6 +25,7 @@
       </p>
 
       <p>
+        <strong>Message:</strong>
         {{ ticket.message }}
       </p>
 
@@ -42,7 +43,7 @@
 
       }
 
-      @if(ticket.status === 'open') {
+      @if(ticket.status !== 'resolved') {
 
         <button
           class="btn"

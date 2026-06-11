@@ -26,9 +26,9 @@
       </div>
 
       <div class="user-info" *ngIf="!sidebarCollapsed()">
-        <span class="username">
-          {{ currentUser()?.profile?.name || 'Customer' }}
-        </span>
+       <span class="username">
+ {{ currentUser()?.profile?.name || currentUser()?.name || 'Customer' }}
+</span>
         <span class="user-role">
           Customer
         </span>
@@ -120,21 +120,27 @@
     <header class="top-header">
 
       <div class="header-title">
-        <h1>
-          Welcome, {{ currentUser()?.profile?.name }}
-        </h1>
+      <h1>
+  Welcome, {{ currentUser()?.profile?.name || currentUser()?.name }}
+</h1>
       </div>
 
       <div class="header-actions">
 
-        <div class="notification-bell-wrapper">
+       <div
+  class="notification-bell-wrapper"
+  (click)="$event.stopPropagation()">
 
-          <button class="btn-bell" (click)="toggleNotifDropdown()">
-            <span
-              class="bell-badge"
-              *ngIf="unreadCount() > 0">
-            </span>
-          </button>
+         <button class="btn-bell" (click)="toggleNotifDropdown()">
+
+  <i class="fa-solid fa-bell"></i>
+
+  <span
+    class="bell-badge"
+    *ngIf="unreadCount() > 0">
+  </span>
+
+</button>
 
           <div
             class="notif-dropdown"
