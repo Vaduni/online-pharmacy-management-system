@@ -1,1 +1,124 @@
-<p>orders works!</p>
+<div class="orders-page-wrapper">
+      <div class="page-header">
+        <h1>Prescription & Order History</h1>
+        <p class="subtitle">Track your medical orders, approvals, and dispatch statuses in real time.</p>
+      </div>
+
+      <div class="orders-layout" *ngIf="customerOrders().length > 0; else emptyOrders">
+        <div class="orders-list-side">
+          @for (order of customerOrders(); track order.id) {
+            <div
+              class="order-summary-card"
+              [class.selected]="selectedOrderId() === order.id"
+              (click)="selectOrder(order.id)"
+            >
+              <div class="order-card-header">
+                <span class="order-id-txt">Order #{{ order.id }}</span>
+                <span class="badge" [ngClass]="order.status | statusBadge:'class'">
+                  {{ order.status | statusBadge:'label' }}
+                </span>
+              </div>
+              
+              <div class="order-meta-info">
+                <span>Placed: {{ order.createdAt | date:'mediumDate' }}</span>
+                <span>Total: \₹{{ order.total.toFixed(2) }}</span>
+                <span>Items: {{ countItems(order) }}</span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="order-details-side">
+          @if (selectedOrder(); as order) {
+            <div class="detail-card animate-fade">
+              <div class="detail-header-row">
+                <h2>Order Profile: #{{ order.id }}</h2>
+                <span class="badge badge-large" [ngClass]="order.status | statusBadge:'class'">
+                  {{ order.status | statusBadge:'label' }}
+                </span>
+              </div>
+
+              <div class="detail-section">
+                <h3>Ordered Medications</h3>
+                <div class="medications-table">
+                  <div class="med-table-header">
+                    <span>Item description</span>
+                    <span class="text-right">Qty</span>
+                    <span class="text-right">Price</span>
+                    <span class="text-right">Subtotal</span>
+                  </div>
+                  <div class="med-table-body">
+                    @for (item of order.items; track item.medicine.id) {
+                      <div class="med-table-row">
+                        <span>{{ item.medicine.name }} <br><small class="text-muted">by {{ item.medicine.brand }}</small></span>
+                        <span class="text-right">{{ item.quantity }}</span>
+                        <span class="text-right">\₹{{ item.medicine.price.toFixed(2) }}</span>
+                        <span class="text-right font-semibold">\₹{{ (item.medicine.price * item.quantity).toFixed(2) }}</span>
+                      </div>
+                    }
+                  </div>
+                  <div class="med-table-footer">
+                    <span>Total</span>
+                    <span></span>
+                    <span></span>
+                    <span class="text-right font-bold">\₹{{ order.total.toFixed(2) }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="detail-section grid-2">
+                <div>
+                  <h3>Shipping Address</h3>
+                  <p class="address-txt">{{ order.shippingAddress.fullName }}</p>
+                  <p class="address-txt">{{ order.shippingAddress.street }}</p>
+                  <p class="address-txt">{{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{ order.shippingAddress.zipCode }}</p>
+                </div>
+                <div>
+                  <h3>Delivery Slot</h3>
+                  <p class="address-txt">{{ order.deliverySlot }}</p>
+                  <div class="rx-upload-info mt-2" *ngIf="order.prescriptionName">
+                    <p class="rx-label-txt">Attached Prescription:</p>
+                    <span class="rx-filename">{{ order.prescriptionName }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <h3>Clinical & Logistic Timeline</h3>
+                <div class="timeline-wrapper">
+                  @for (event of order.timeline; track event.timestamp; let last = $last) {
+                    <div class="timeline-item" [class.last-item]="last">
+                      <div class="timeline-dot-wrapper">
+                        <div class="timeline-dot" [ngClass]="event.status | statusBadge:'class'"></div>
+                        <div class="timeline-stem" *ngIf="!last"></div>
+                      </div>
+                      <div class="timeline-content-box">
+                        <div class="timeline-meta">
+                          <span class="timeline-status-lbl font-semibold">{{ event.status | statusBadge:'label' }}</span>
+                          <span class="timeline-time">{{ event.timestamp | date:'medium' }}</span>
+                        </div>
+                        <p class="timeline-comment">{{ event.comment }}</p>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="select-prompt">
+              <span class="select-prompt-icon"></span>
+              <h3>Select an Order</h3>
+              <p>Choose an order log from the list to display items list, prescription attachments, and pharmacist tracking updates.</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <ng-template #emptyOrders>
+        <div class="empty-state-card">
+          <span class="empty-icon"></span>
+          <h2>No Pharmacy Orders Placed Yet</h2>
+          <p>Once you shop for medications and complete checkout, your order history timeline will appear here.</p>
+        </div>
+      </ng-template>
+    </div>

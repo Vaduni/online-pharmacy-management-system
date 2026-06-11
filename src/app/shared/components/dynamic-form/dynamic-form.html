@@ -1,1 +1,107 @@
-<p>dynamic-form works!</p>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="dynamic-form-container">
+      <div class="form-grid">
+        @for (field of config; track field.name) {
+          <div class="form-group" [ngClass]="'field-' + field.name">
+            <label [for]="field.name" class="form-label">
+              {{ field.label }}
+              @if (isRequired(field)) {
+                <span class="required-asterisk">*</span>
+              }
+            </label>
+
+            @if (field.type === 'text') {
+              <input
+                [id]="field.name"
+                type="text"
+                [formControlName]="field.name"
+                [placeholder]="field.placeholder || ''"
+                class="form-input"
+              />
+            }
+
+            @if (field.type === 'number') {
+              <input
+                [id]="field.name"
+                type="number"
+                [formControlName]="field.name"
+                [placeholder]="field.placeholder || ''"
+                class="form-input"
+              />
+            }
+
+            @if (field.type === 'select') {
+              <select [id]="field.name" [formControlName]="field.name" class="form-select">
+                @if (field.placeholder) {
+                  <option value="" disabled>{{ field.placeholder }}</option>
+                }
+                @for (opt of field.options; track opt.value) {
+                  <option [value]="opt.value">{{ opt.label }}</option>
+                }
+              </select>
+            }
+
+            @if (field.type === 'date' || field.type === 'datetime-local') {
+              <input
+                [id]="field.name"
+                [type]="field.type"
+                [formControlName]="field.name"
+                class="form-input"
+              />
+            }
+
+            @if (field.type === 'textarea') {
+              <textarea
+                [id]="field.name"
+                [formControlName]="field.name"
+                [placeholder]="field.placeholder || ''"
+                class="form-textarea"
+              ></textarea>
+            }
+
+            @if (field.type === 'file') {
+              <div class="file-upload-wrapper">
+                <input
+                  [id]="field.name"
+                  type="file"
+                  (change)="onFileChange($event, field.name)"
+                  class="form-file-input"
+                />
+                <div class="file-upload-preview">
+                  @if (fileNames[field.name]) {
+                    <span class="file-name-txt">📄 {{ fileNames[field.name] }}</span>
+                    <button type="button" class="btn-clear-file" (click)="clearFile(field.name)">×</button>
+                  } @else {
+                    <span class="file-placeholder-txt">{{ field.placeholder || 'Choose prescription file...' }}</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (form.get(field.name)?.invalid && (form.get(field.name)?.touched || submitted)) {
+              <div class="form-error-msg">
+                @for (validation of field.validations; track validation.message) {
+                  @if (hasError(field.name, validation.type)) {
+                    <span>{{ validation.message }}</span>
+                  }
+                }
+                @if (form.get(field.name)?.errors?.['required'] && !hasValidationMsg(field, 'required')) {
+                  <span>This field is required.</span>
+                }
+                @if (form.get(field.name)?.errors?.['prescriptionRequired']) {
+                  <span>{{ form.get(field.name)?.errors?.['prescriptionRequired'] }}</span>
+                }
+                @if (form.get(field.name)?.errors?.['insufficientLeadTime']) {
+                  <span>{{ form.get(field.name)?.errors?.['insufficientLeadTime']?.message }}</span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="form-actions" *ngIf="showSubmitButton">
+        <button type="submit" class="btn btn-primary btn-submit-form" [disabled]="form.invalid && submitted">
+          {{ submitButtonText }}
+        </button>
+      </div>
+    </form>

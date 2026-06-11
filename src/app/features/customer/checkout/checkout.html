@@ -1,1 +1,167 @@
-<p>checkout works!</p>
+<div class="checkout-page-container">
+      <div class="checkout-header">
+        <h1>Checkout</h1>
+        <div class="step-indicator-bar">
+          <div class="step-indicator" [class.active]="step() === 1" [class.done]="step() > 1">
+            <span>1</span> Delivery & Info
+          </div>
+          <div class="step-line" [class.done]="step() > 1"></div>
+          <div class="step-indicator" [class.active]="step() === 2" [class.done]="step() > 2">
+            <span>2</span> Verification
+          </div>
+          <div class="step-line" [class.done]="step() > 2"></div>
+          <div class="step-indicator" [class.active]="step() === 3" [class.done]="step() > 3">
+            <span>3</span> Final Review
+          </div>
+        </div>
+      </div>
+
+      <div class="checkout-layout">
+        <div class="checkout-main-content">
+          
+          <div *ngIf="step() === 1" class="checkout-card animate-fade">
+            <h2>Shipping & Patient Information</h2>
+            <p class="section-desc">Please complete delivery coordinates and verify patient criteria. Restricted medications require a minimum patient age of 18.</p>
+
+            <app-dynamic-form
+              [config]="formConfig()"
+              submitButtonText="Proceed to Verification Step"
+              (formSubmit)="onAddressSubmit($event)"
+              (formCreated)="onFormCreated($event)"
+            />
+          </div>
+
+          <div *ngIf="step() === 2" class="checkout-card animate-fade">
+            <h2>Prescription Verification Reference</h2>
+            <p class="section-desc">At least one medication in your shopping cart requires a doctor's prescription. Please upload a clear photo or PDF copy of the prescription slip.</p>
+
+            <div class="checkout-rx-panel">
+              <div class="cart-rx-list-box">
+                <h4>Items Requiring Prescription:</h4>
+                <ul class="rx-cart-list">
+                  @for (item of rxItems(); track item.medicine.id) {
+                    <li>
+                      <span class="bullet-rx">Rx</span>
+                      <strong>{{ item.medicine.name }}</strong> (by {{ item.medicine.brand }})
+                    </li>
+                  }
+                </ul>
+              </div>
+
+              <form [formGroup]="rxForm" class="rx-upload-form mt-4">
+                <div class="form-group">
+                  <label class="form-label">Upload Medical Prescription *</label>
+                  <div class="rx-dropzone">
+                    <input
+                      type="file"
+                      id="rx-file-input"
+                      (change)="onRxFileSelected($event)"
+                      accept=".jpg,.jpeg,.png,.pdf"
+                      class="rx-file-control"
+                    />
+                    <div class="dropzone-content">
+                      @if (rxFileInfo()) {
+                        <div class="rx-preview-meta">
+                          <span class="rx-file-icon">📄</span>
+                          <div class="rx-meta-text">
+                            <span class="file-name">{{ rxFileInfo()?.name }}</span>
+                            <span class="file-size">{{ formatSize(rxFileInfo()?.size || 0) }}</span>
+                          </div>
+                          <button type="button" class="btn-clear-rx" (click)="clearRxFile()">×</button>
+                        </div>
+                      } @else {
+                        <span class="upload-icon">📂</span>
+                        <p class="upload-title">Choose PDF or Image file (max 5MB)</p>
+                        <p class="upload-sub">Accepted: JPEG, PNG, PDF formats</p>
+                      }
+                    </div>
+                  </div>
+                  <div *ngIf="rxForm.get('prescriptionFile')?.touched && rxForm.get('prescriptionFile')?.invalid" class="form-error mt-2">
+                    A valid prescription attachment is required.
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="step-actions mt-4">
+              <button class="btn btn-outline" (click)="prevStep()">Back</button>
+              <button class="btn btn-primary" [disabled]="rxForm.invalid" (click)="onRxSubmit()">
+                Proceed to Final Review
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="step() === 3" class="checkout-card animate-fade">
+            <h2>Review & Submit Order</h2>
+            <p class="section-desc">Review your delivery choices, medications, and details. Click 'Place Order' to finalize.</p>
+
+            <div class="review-block">
+              <div class="review-row">
+                <div class="review-col">
+                  <h4>Delivery Address</h4>
+                  <p>{{ shippingDetails()?.fullName }}</p>
+                  <p>{{ shippingDetails()?.street }}</p>
+                  <p>{{ shippingDetails()?.city }}, {{ shippingDetails()?.state }} {{ shippingDetails()?.zipCode }}</p>
+                </div>
+                <div class="review-col">
+                  <h4>Delivery Slot</h4>
+                  <p>{{ formatDeliverySlot(shippingDetails()?.deliverySlot) }}</p>
+                  <p class="text-muted" *ngIf="shippingDetails()?.dateOfBirth">
+                    Patient Date of Birth: {{ shippingDetails()?.dateOfBirth | date:'longDate' }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="review-row rx-summary-block" *ngIf="requiresRx()">
+                <div class="review-col">
+                  <h4>📎 Uploaded Prescription</h4>
+                  <p class="text-success">📄 {{ rxFileInfo()?.name }} (Verified and attached)</p>
+                </div>
+              </div>
+
+              <div class="review-items-block mt-4">
+                <h4>Items to Order</h4>
+                <div class="review-items-list">
+                  @for (item of cart(); track item.medicine.id) {
+                    <div class="review-item-row">
+                      <span>{{ item.medicine.name }} (x{{ item.quantity }})</span>
+                      <span>\₹{{ (item.medicine.price * item.quantity).toFixed(2) }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="step-actions mt-4">
+              <button class="btn btn-outline" (click)="prevStep()">Back</button>
+              <button class="btn btn-primary btn-lg" (click)="submitFinalOrder()">
+                Place Order & Submit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-sidebar">
+          <div class="summary-card">
+            <h3>Cart Summary</h3>
+            <div class="sidebar-items-list">
+              @for (item of cart(); track item.medicine.id) {
+                <div class="sidebar-item-row">
+                  <span>{{ item.medicine.name }} (x{{ item.quantity }})</span>
+                  <span>\₹{{ (item.medicine.price * item.quantity).toFixed(2) }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="summary-row total-divider pt-2">
+              <span>Subtotal</span>
+              <span>\₹{{ cartTotal().toFixed(2) }}</span>
+            </div>
+            <div class="summary-row grand-total-row">
+              <span>Grand Total</span>
+              <span>\₹{{ cartTotal().toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
