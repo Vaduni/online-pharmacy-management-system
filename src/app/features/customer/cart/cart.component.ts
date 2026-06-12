@@ -9,7 +9,7 @@ import { CartItem } from '../../../core/types';
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css']
+  styleUrls: ['./cart.component.css'],
 })
 export class CustomerCartComponent {
   private orderService = inject(OrderService);
