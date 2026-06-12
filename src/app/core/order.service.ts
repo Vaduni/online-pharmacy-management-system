@@ -27,7 +27,7 @@ export class OrderService {
   );
 
   addToCart(medicine: Medicine, quantity: number) {
-    // Custom Validation: Check Stock
+    // Custom Validation1: Check Stock
     if (medicine.stock <= 0) {
       this.notifications.addNotification(
         'Add to Cart Failed',
@@ -43,7 +43,7 @@ export class OrderService {
     const existingIdx = currentCart.findIndex((item) => item.medicine.id === medicine.id);
 
     if (existingIdx !== -1) {
-      // Custom Validation- Duplicate medicine restriction with quantity limit
+      // Custom Validation2: Duplicate medicine restriction with quantity limit
       const newQty = currentCart[existingIdx].quantity + quantity;
       if (newQty > limit) {
         this.notifications.addNotification(
@@ -170,19 +170,21 @@ export class OrderService {
       });
     }
 
-    cartItems.forEach((item) => {
-      this.medicineService.adjustStock(item.medicine.id, -item.quantity);
-    });
+   cartItems.forEach((item) => {
+  this.medicineService.adjustStock(item.medicine.id, -item.quantity);
+});
 
-    this.orders.update(current => [newOrder, ...current]);
+this.orders.update(current => [newOrder, ...current]);
 
-    this.notifications.addNotification(
-      'Order Placed',
-      `Order ${orderId} has been successfully submitted! Status: ${newOrder.status}`,
-      'success',
-    );
+this.clearCart();
 
-    return newOrder;
+this.notifications.addNotification(
+  'Order Placed',
+  `Order ${orderId} has been successfully submitted! Status: ${newOrder.status}`,
+  'success',
+);
+
+return newOrder;
   }
 
   updateOrderStatus(orderId: string, status: Order['status'], comment?: string) {
