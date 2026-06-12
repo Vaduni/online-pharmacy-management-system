@@ -194,7 +194,7 @@
       "brand": "Amlovas",
       "category": "Antihypertensive",
       "price": 95,
-      "stock": 70,
+      "stock": 69,
       "inStock": true,
       "isPrescriptionRequired": true,
       "wellnessSegment": "Cardiac",
@@ -368,7 +368,7 @@
       "brand": "Shelcal",
       "category": "Supplement",
       "price": 130,
-      "stock": 220,
+      "stock": 219,
       "inStock": true,
       "isPrescriptionRequired": false,
       "wellnessSegment": "Bone Health",
@@ -445,6 +445,113 @@
       "paymentStatus": "paid",
       "createdAt": "2024-06-01T09:00:00Z",
       "updatedAt": "2024-06-01T09:00:00Z"
+    },
+    {
+      "id": "NODX57jZXbA",
+      "customerId": "USR002",
+      "customerName": "Pragya",
+      "items": [
+        {
+          "medicine": {
+            "id": "MED019",
+            "name": "Calcium + Vitamin D3",
+            "brand": "Shelcal",
+            "category": "Supplement",
+            "price": 130,
+            "stock": 220,
+            "inStock": true,
+            "isPrescriptionRequired": false,
+            "wellnessSegment": "Bone Health",
+            "dosageInfo": "1 tablet twice daily after meals",
+            "sideEffects": "Constipation, hypercalcemia",
+            "manufacturer": "Elder Pharma",
+            "expiryDate": "2027-05-01",
+            "restrictions": []
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 130,
+      "shippingAddress": {
+        "fullName": "Vaduni Niranjan",
+        "street": "123",
+        "city": "Greater Noida",
+        "state": "Uttar Pradesh",
+        "zipCode": "201310"
+      },
+      "status": "packed",
+      "deliverySlot": "27/06/2026 @ 01:18",
+      "timeline": [
+        {
+          "status": "accepted",
+          "timestamp": "2026-06-12T07:38:23.766Z",
+          "comment": "Order placed successfully."
+        },
+        {
+          "status": "accepted",
+          "timestamp": "2026-06-12T07:38:23.766Z",
+          "comment": "Stock verified and order accepted."
+        },
+        {
+          "status": "packed",
+          "timestamp": "2026-06-12T08:31:25.948Z",
+          "comment": "Status updated to packed"
+        }
+      ],
+      "createdAt": "2026-06-12T07:38:23.766Z"
+    },
+    {
+      "id": "cC_u25HYFkY",
+      "customerId": "USR002",
+      "customerName": "Pragya",
+      "items": [
+        {
+          "medicine": {
+            "id": "MED009",
+            "name": "Amlodipine 5mg",
+            "brand": "Amlovas",
+            "category": "Antihypertensive",
+            "price": 95,
+            "stock": 70,
+            "inStock": true,
+            "isPrescriptionRequired": true,
+            "wellnessSegment": "Cardiac",
+            "dosageInfo": "1 tablet once daily",
+            "sideEffects": "Ankle swelling, flushing",
+            "manufacturer": "Sun Pharma",
+            "expiryDate": "2026-10-01",
+            "restrictions": [
+              "Prescription required"
+            ]
+          },
+          "quantity": 1
+        }
+      ],
+      "total": 95,
+      "shippingAddress": {
+        "fullName": "Vaduni Niranjan",
+        "street": "123",
+        "city": "Greater Noida",
+        "state": "Uttar Pradesh",
+        "zipCode": "201310"
+      },
+      "status": "accepted",
+      "deliverySlot": "25/06/2026 @ 13:28",
+      "prescriptionUrl": "data:image/png;base64,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",
+      "prescriptionName": "Screenshot 2026-06-11 at 10.03.44 AM.png",
+      "timeline": [
+        {
+          "status": "pending_verification",
+          "timestamp": "2026-06-12T08:01:06.101Z",
+          "comment": "Prescription uploaded and awaiting verification."
+        },
+        {
+          "status": "accepted",
+          "timestamp": "2026-06-12T08:31:26.598Z",
+          "comment": "Status updated to accepted"
+        }
+      ],
+      "createdAt": "2026-06-12T08:01:06.101Z"
     }
   ],
   "prescriptions": [
@@ -512,6 +619,78 @@
       "type": "success",
       "timestamp": "2026-06-12T06:01:32.121Z",
       "isRead": false
+    },
+    {
+      "id": "-rPwZxibAYs",
+      "title": "Removed",
+      "message": "Item removed from cart.",
+      "type": "info",
+      "timestamp": "2026-06-12T07:37:18.319Z",
+      "isRead": false
+    },
+    {
+      "id": "rsjEmiN8fpc",
+      "title": "Added To Cart",
+      "message": "Calcium + Vitamin D3 added successfully.",
+      "type": "success",
+      "timestamp": "2026-06-12T07:37:22.100Z",
+      "isRead": false
+    },
+    {
+      "id": "tPU7NoM7XTA",
+      "title": "Order Placed",
+      "message": "Order NODX57jZXbA submitted successfully.",
+      "type": "success",
+      "timestamp": "2026-06-12T07:38:23.776Z",
+      "isRead": false
+    },
+    {
+      "id": "DKR2odh4GFw",
+      "title": "Added To Cart",
+      "message": "Amlodipine 5mg added successfully.",
+      "type": "success",
+      "timestamp": "2026-06-12T07:58:10.768Z",
+      "isRead": false
+    },
+    {
+      "id": "pzzt2py-ynE",
+      "title": "Order Placed",
+      "message": "Order cC_u25HYFkY submitted successfully.",
+      "type": "success",
+      "timestamp": "2026-06-12T08:01:06.125Z",
+      "isRead": false
+    },
+    {
+      "id": "hYYOYk9Wdss",
+      "title": "Login Successful",
+      "message": "Welcome vaduni@gmail.com",
+      "type": "success",
+      "timestamp": "2026-06-12T08:29:05.254Z",
+      "isRead": false
+    },
+    {
+      "id": "AuhuSzLGRiQ",
+      "title": "Login Successful",
+      "message": "Welcome vaduni@gmail.com",
+      "type": "success",
+      "timestamp": "2026-06-12T08:31:12.624Z",
+      "isRead": false
+    },
+    {
+      "id": "ZPH-gCdGCQw",
+      "title": "Order Updated",
+      "message": "NODX57jZXbA is now packed",
+      "type": "success",
+      "timestamp": "2026-06-12T08:31:25.957Z",
+      "isRead": false
+    },
+    {
+      "id": "1rXU52E0Yr0",
+      "title": "Order Updated",
+      "message": "cC_u25HYFkY is now accepted",
+      "type": "success",
+      "timestamp": "2026-06-12T08:31:26.605Z",
+      "isRead": false
     }
   ],
   "addresses": [
@@ -543,30 +722,8 @@
     },
     {
       "userId": "USR002",
-      "items": [
-        {
-          "medicine": {
-            "id": "MED009",
-            "name": "Amlodipine 5mg",
-            "brand": "Amlovas",
-            "category": "Antihypertensive",
-            "price": 95,
-            "stock": 70,
-            "inStock": true,
-            "isPrescriptionRequired": true,
-            "wellnessSegment": "Cardiac",
-            "dosageInfo": "1 tablet once daily",
-            "sideEffects": "Ankle swelling, flushing",
-            "manufacturer": "Sun Pharma",
-            "expiryDate": "2026-10-01",
-            "restrictions": [
-              "Prescription required"
-            ]
-          },
-          "quantity": 1
-        }
-      ],
-      "updatedAt": "2026-06-12T06:01:32.127Z",
+      "items": [],
+      "updatedAt": "2026-06-12T08:01:06.128Z",
       "id": "WRZ8wH2LlCY"
     }
   ],
@@ -590,5 +747,6 @@
       "status": "open",
       "createdAt": "2024-06-05T14:30:00Z"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

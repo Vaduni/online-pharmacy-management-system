@@ -49,12 +49,12 @@
 
 .order-summary-card:hover {
   background: #f8fafc;
-  border-color: #10b981;
+  border-color: #086345;
 }
 
 .order-summary-card.selected {
   background: #ecfdf5;
-  border-color: #10b981;
+  border-color: #086345;
 }
 
 .order-card-header {
@@ -115,7 +115,7 @@
 
 .detail-section h3 {
   font-size: 1rem;
-  color: #10b981;
+  color: #086345;
   margin: 0 0 1rem;
   font-weight: 600;
 }
@@ -196,7 +196,7 @@
 
 .rx-filename {
   font-size: 0.8rem;
-  color: #10b981;
+  color: #086345;
   font-weight: 600;
 }
 
@@ -232,7 +232,7 @@
 }
 
 .timeline-dot.status-approved {
-  background: #10b981;
+  background: #086345;
 }
 
 .timeline-dot.status-rejected {
@@ -248,7 +248,7 @@
 }
 
 .timeline-dot.status-delivered {
-  background: #10b981;
+  background: #086345;
 }
 
 .timeline-dot.status-canceled {

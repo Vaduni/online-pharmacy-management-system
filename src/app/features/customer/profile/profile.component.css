@@ -45,7 +45,7 @@
 
 .section-divider {
   font-size: 0.95rem;
-  color: #10b981;
+  color: #086345;
   border-bottom: 1px solid #e2e8f0;
   padding-bottom: 0.35rem;
   margin: 1.5rem 0 0.75rem;
@@ -109,7 +109,7 @@
 
 .form-input:focus {
   outline: none;
-  border-color: #10b981;
+  border-color: #086345;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
 }
 
@@ -136,7 +136,7 @@
 
 .btn-save,
 .btn-primary {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #086345, #059669);
   color: white;
   border: none;
   border-radius: 8px;

@@ -116,7 +116,7 @@
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #10b981;
+  border-color: #086345;
   box-shadow: 0 0 0 3px rgba(16,185,129,0.12);
 }
 
@@ -183,7 +183,7 @@
 }
 
 input:checked + .slider {
-  background-color: #10b981;
+  background-color: #086345;
 }
 
 input:checked + .slider:before {
@@ -245,7 +245,7 @@ input:checked + .slider:before {
 }
 
 .text-brand-green {
-  color: #10b981;
+  color: #086345;
   font-weight: 600;
 }
 

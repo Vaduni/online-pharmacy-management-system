@@ -59,7 +59,7 @@
   height: 55px;
   border-radius: 12px;
   background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
+  color: #086345;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,7 +110,7 @@
 }
 
 .card-action-link {
-  color: #10b981;
+  color: #086345;
   text-decoration: none;
   font-weight: 600;
 }
@@ -208,7 +208,7 @@
 }
 
 .step.completed .step-circle {
-  background: #10b981;
+  background: #086345;
 }
 
 .step-label {
@@ -225,7 +225,7 @@
 }
 
 .step-line.completed {
-  background: #10b981;
+  background: #086345;
 }
 
 .section-desc {
@@ -263,7 +263,7 @@
 .form-input:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: #10b981;
+  border-color: #086345;
 }
 
 .form-textarea {
@@ -313,7 +313,7 @@
 .ticket-response {
   margin-top: 0.75rem;
   background: #ecfdf5;
-  border-left: 3px solid #10b981;
+  border-left: 3px solid #086345;
   padding: 0.75rem;
   color: #166534;
   border-radius: 4px;
@@ -366,7 +366,7 @@
   display: flex;
   align-items: center;
   gap: .5rem;
-  color: #10b981;
+  color: #086345;
   font-size: 1.4rem;
   font-weight: 700;
   padding-bottom: 1.5rem;
@@ -389,7 +389,7 @@
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  background: linear-gradient(135deg,#10b981,#3b82f6);
+  background: linear-gradient(135deg,#086345,#3b82f6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -434,7 +434,7 @@
 
 .nav-item.active {
   background: #ecfdf5;
-  color: #10b981;
+  color: #086345;
   font-weight: 600;
 }
 
@@ -446,7 +446,7 @@
 .badge-cart {
   position: absolute;
   right: 12px;
-  background: #10b981;
+  background: #086345;
   color: white;
   border-radius: 20px;
   padding: 2px 8px;
@@ -544,7 +544,7 @@
 .btn-text-action {
   border: none;
   background: transparent;
-  color: #10b981;
+  color: #086345;
   cursor: pointer;
 }
 

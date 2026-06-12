@@ -75,7 +75,7 @@
 
 .item-brand {
   font-size: 0.7rem;
-  color: #10b981;
+  color: #086345;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -88,7 +88,7 @@
 }
 
 .item-name-link:hover {
-  color: #10b981;
+  color: #086345;
 }
 
 .rx-badge {
