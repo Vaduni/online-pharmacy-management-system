@@ -471,5 +471,26 @@
       ],
       "updatedAt": "2024-06-03T11:00:00Z"
     }
-  ]
+  ],
+  "supportTickets": [
+  {
+    "id": "TKT001",
+    "customerId": "USR002",
+    "customerName": "Pragya",
+    "subject": "Prescription Upload Issue",
+    "message": "I am unable to upload my prescription during checkout.",
+    "status": "resolved",
+    "response": "Issue fixed. Please try again and ensure the file size is under 5 MB.",
+    "createdAt": "2024-06-01T10:00:00Z"
+  },
+  {
+    "id": "TKT002",
+    "customerId": "USR003",
+    "customerName": "Romi",
+    "subject": "Order Delivery Delay",
+    "message": "My order has not arrived yet even though it was marked shipped.",
+    "status": "open",
+    "createdAt": "2024-06-05T14:30:00Z"
+  }
+]
 }

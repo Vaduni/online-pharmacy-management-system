@@ -1,71 +1,57 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { Medicine } from './types';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MedicineService {
-  private readonly STORAGE_KEY = 'pharmacy_medicines';
-
-  constructor() {
-    this.initializeMedicines();
-  }
-
-  private initializeMedicines() {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-
-    if (!data) {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify([]));
-    }
-  }
+  [x: string]: any;
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/medicines';
 
   getMedicines(): Observable<Medicine[]> {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    const medicines: Medicine[] = data ? JSON.parse(data) : [];
-    return of(medicines).pipe(delay(400));
+    return this.http.get<Medicine[]>(this.apiUrl);
   }
 
-  getMedicineById(id: string): Observable<Medicine | undefined> {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    const medicines: Medicine[] = data ? JSON.parse(data) : [];
-    const medicine = medicines.find((m) => m.id === id);
-    return of(medicine).pipe(delay(200));
+  getMedicineById(id: string): Observable<Medicine> {
+    return this.http.get<Medicine>(`${this.apiUrl}/${id}`);
   }
 
   saveMedicine(medicine: Medicine): Observable<Medicine> {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    const medicines: Medicine[] = data ? JSON.parse(data) : [];
-    const idx = medicines.findIndex((m) => m.id === medicine.id);
-
-    if (idx !== -1) {
-      medicines[idx] = medicine;
-    } else {
-      medicines.push(medicine);
-    }
-
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(medicines));
-    return of(medicine).pipe(delay(200));
+    return this.http.put<Medicine>(
+      `${this.apiUrl}/${medicine.id}`,
+      medicine
+    );
   }
 
-  deleteMedicine(id: string): Observable<string> {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    let medicines: Medicine[] = data ? JSON.parse(data) : [];
-    medicines = medicines.filter((m) => m.id !== id);
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(medicines));
-    return of(id).pipe(delay(200));
+  addMedicine(medicine: Medicine): Observable<Medicine> {
+    return this.http.post<Medicine>(
+      this.apiUrl,
+      medicine
+    );
   }
 
-  adjustStock(id: string, count: number): Observable<Medicine | null> {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    const medicines: Medicine[] = data ? JSON.parse(data) : [];
-    const idx = medicines.findIndex((m) => m.id === id);
-    if (idx !== -1) {
-      medicines[idx].stock = Math.max(0, medicines[idx].stock + count);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(medicines));
-      return of(medicines[idx]);
-    }
-    return of(null);
+  deleteMedicine(id: string): Observable<void> {
+    return this.http.delete<void>(
+      `${this.apiUrl}/${id}`
+    );
   }
+  adjustStock(id: string, count: number): Observable<Medicine> {
+  return this.getMedicineById(id).pipe(
+    switchMap((medicine) => {
+      const updatedMedicine: Medicine = {
+        ...medicine,
+        stock: Math.max(0, medicine.stock + count)
+      };
+
+      return this.http.put<Medicine>(
+        `${this.apiUrl}/${id}`,
+        updatedMedicine
+      );
+    })
+  );
+}
 }

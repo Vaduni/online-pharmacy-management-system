@@ -26,35 +26,6 @@ export class OrderService {
     this.cart().some((item) => item.medicine.isPrescriptionRequired),
   );
 
-  private readonly STORAGE_KEY_ORDERS = 'pharmacy_orders';
-  private readonly STORAGE_KEY_TICKETS = 'pharmacy_tickets';
-
-  constructor() {
-    this.loadState();
-  }
-
-  private loadState() {
-    try {
-      const savedOrders = localStorage.getItem(this.STORAGE_KEY_ORDERS);
-      if (savedOrders) this.orders.set(JSON.parse(savedOrders));
-
-      const savedTickets = localStorage.getItem(this.STORAGE_KEY_TICKETS);
-      if (savedTickets) this.supportTickets.set(JSON.parse(savedTickets));
-    } catch (e) {
-      console.error('Failed to load order/ticket state', e);
-    }
-  }
-
-  private saveOrders(updated: Order[]) {
-    this.orders.set(updated);
-    localStorage.setItem(this.STORAGE_KEY_ORDERS, JSON.stringify(updated));
-  }
-
-  private saveTickets(updated: SupportTicket[]) {
-    this.supportTickets.set(updated);
-    localStorage.setItem(this.STORAGE_KEY_TICKETS, JSON.stringify(updated));
-  }
-
   addToCart(medicine: Medicine, quantity: number) {
     // Custom Validation: Check Stock
     if (medicine.stock <= 0) {
@@ -203,9 +174,7 @@ export class OrderService {
       this.medicineService.adjustStock(item.medicine.id, -item.quantity);
     });
 
-    const updatedOrders = [newOrder, ...this.orders()];
-    this.saveOrders(updatedOrders);
-    this.clearCart();
+    this.orders.update(current => [newOrder, ...current]);
 
     this.notifications.addNotification(
       'Order Placed',
@@ -236,7 +205,7 @@ export class OrderService {
 
       const updated = [...currentOrders];
       updated[orderIdx] = updatedOrder;
-      this.saveOrders(updated);
+      this.orders.set(updated);
 
       this.notifications.addNotification(
         'Order Status Update',
@@ -260,8 +229,7 @@ export class OrderService {
       createdAt: new Date().toISOString(),
     };
 
-    const updated = [newTicket, ...this.supportTickets()];
-    this.saveTickets(updated);
+    this.supportTickets.update(current => [newTicket, ...current]);
 
     this.notifications.addNotification(
       'Support Ticket Opened',
@@ -283,7 +251,7 @@ export class OrderService {
 
       const updated = [...currentTickets];
       updated[idx] = updatedTicket;
-      this.saveTickets(updated);
+     this.supportTickets.set(updated);
 
       this.notifications.addNotification(
         'Support Ticket Answered',
