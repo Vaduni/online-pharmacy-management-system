@@ -43,7 +43,7 @@ export class OrderService {
     const existingIdx = currentCart.findIndex((item) => item.medicine.id === medicine.id);
 
     if (existingIdx !== -1) {
-      // Custom Validation: Duplicate medicine restriction (if updating, we check limit)
+      // Custom Validation- Duplicate medicine restriction with quantity limit
       const newQty = currentCart[existingIdx].quantity + quantity;
       if (newQty > limit) {
         this.notifications.addNotification(
